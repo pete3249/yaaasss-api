@@ -4,11 +4,9 @@ class EventsController < ApplicationController
   # GET /events
   def index
     @created_events= current_user.created_events
-    @invited_events= current_user.invited_events
 
     render json: { 
-      created_events: EventSerializer.new(@created_events).serializable_hash[:data].map{|event| event[:attributes]},
-      invited_events: EventSerializer.new(@invited_events).serializable_hash[:data].map{|event| event[:attributes]}
+      created_events: EventSerializer.new(@created_events).serializable_hash[:data].map{|event| event[:attributes]}
     }
   end
 
@@ -43,12 +41,10 @@ class EventsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_event
       @event = Event.find(params[:id])
     end
 
-    # Only allow a trusted parameter "white list" through.
     def event_params
       params.require(:event).permit(:name, :start_time, :end_time, :location, :address, :notes, :invited_user_ids => [])
     end
