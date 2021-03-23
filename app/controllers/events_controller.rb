@@ -4,9 +4,11 @@ class EventsController < ApplicationController
   # GET /events
   def index
     @created_events= current_user.created_events
+    @invited_events= current_user.invited_events.map{|invited| invited.event}
 
     render json: { 
-      created_events: EventSerializer.new(@created_events).serializable_hash[:data].map{|event| event[:attributes]}
+      created_events: CreatedEventsSerializer.new(@created_events).serializable_hash[:data].map{|event| event[:attributes]},
+      invited_events: EventSerializer.new(@invited_events).serializable_hash[:data].map{|event| event[:attributes]}
     }
   end
 
